@@ -1,0 +1,4 @@
+{
+    "mongoURI" : "mongodb+srv://harshit123:harshit123@ptdb.6ypxy.mongodb.net/ptdb?retryWrites=true&w=majority",
+    "jwtSecret": "mySecrettoken"
+}
