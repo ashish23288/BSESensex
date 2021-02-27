@@ -1,18 +1,16 @@
-const Sensex = require('../models/sensex');
-const moment = require('moment');
+const Sensex = require("../models/sensex");
 
 exports.getAllStockes = (req, res) => {
   const page = req.params.page;
-  console.log('page', page);
   Sensex.find()
     .sort({ date: -1 })
     .select("open close date -_id")
-    .skip((page-1)*3)
+    .skip((page - 1) * 3)
     .limit(3)
     .then((data) => {
       res.send(data);
     })
-    .catch(err => console.log(err));
+    .catch(err => console.error(err));
 };
 
 exports.addStock = (req, res) => {
@@ -22,8 +20,7 @@ exports.addStock = (req, res) => {
   });
   data.save()
     .then((result) => {
-      console.log(result);
-      res.send('Data Added Successfully');
+      res.send("Data Added Successfully");
     })
-    .catch(err => console.log(err))
-}
+    .catch(err => console.error(err));
+};

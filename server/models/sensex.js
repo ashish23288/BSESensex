@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const sensexSchema = new Schema({
@@ -13,4 +13,4 @@ const sensexSchema = new Schema({
   date: { type: Date, default: Date.now }
 });
 
-module.exports = mongoose.model('Sensex', sensexSchema);
+module.exports = mongoose.model("Sensex", sensexSchema);
