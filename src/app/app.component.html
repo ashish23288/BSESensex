@@ -22,5 +22,17 @@
       </tr>
     </tbody>
   </table>
+  <nav aria-label="...">
+    <ul class="pagination">
+      <li class="page-item" [ngClass]="{disabled: currentPage === 1}">
+        <a class="page-link" (click)="currentPage !== 1 && getAllStockes(currentPage - 1)" tabindex="-1">Previous</a>
+      </li>
+      <li class="page-item" [ngClass]="{active: pageNo === currentPage}" *ngFor="let pageNo of paginationArr">
+        <a class="page-link" (click)="getAllStockes(pageNo)">{{pageNo}} <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="page-item" [ngClass]="{disabled: currentPage === totalPages}">
+        <a class="page-link" (click)="currentPage !== totalPages && getAllStockes(currentPage + 1)">Next</a>
+      </li>
+    </ul>
+  </nav>
 </div>
-<router-outlet></router-outlet>
