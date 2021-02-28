@@ -13,11 +13,11 @@ export class StockService {
   constructor(private http: HttpClient) { }
 
   getAllStockes(page = 1) {
-    return this.http.get<StockApiData>(`${environment.serverURL}/${page}`);
+    return this.http.get<StockApiData>(`${environment.serverURL}/api/getAllStockes/${page}`);
   }
 
   addStock(data) {
     return this.http.post<{ success?: boolean, warning?: boolean, error?: boolean, message: string }>
-      (`${environment.serverURL}/addStock`, data);
+      (`${environment.serverURL}/api/addStock`, data);
   }
 }
