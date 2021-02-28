@@ -8,9 +8,9 @@ function requireHTTPS(req, res, next) {
 const express = require('express');
 const app = express();
 app.use(requireHTTPS);
-app.use(express.static('./dist/bse-sensex'));
+app.use(express.static('/dist/bse-sensex'));
 app.get('/*', function (req, res) {
-  res.sendFile('index.html', { root: './dist/bse-sensex' });
+  res.sendFile('index.html', { root: '/dist/bse-sensex' });
 });
 app.listen(process.env.PORT || 8080, () => {
   console.log('server is running');
