@@ -25,9 +25,9 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.socket = io(environment.serverURL, { transports: ['websocket'] });
     this.socket.on('receive_message', (data) => {
-      this.getAllStockes(1);
+      // this.getAllStockes(1);
     });
-    this.getAllStockes(1);
+    // this.getAllStockes(1);
   }
 
   open(content) {
