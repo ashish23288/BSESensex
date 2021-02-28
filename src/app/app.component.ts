@@ -30,12 +30,19 @@ export class AppComponent implements OnInit {
   }
 
   open(content) {
-    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' })
-    // .result.then((result) => {
-    //   this.closeResult = `Closed with: ${result}`;
-    // }, (reason) => {
-    //   this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    // });
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
+  }
+
+  submit(stockForm) {
+    console.log(stockForm);
+    this.stockService.addStock(stockForm).subscribe((res) => {
+      if (!res.error) {
+        this.modalService.dismissAll();
+        alert('Added');
+      } else {
+        alert('Failed');
+      }
+    });
   }
 
   getAllStockes(page: number) {

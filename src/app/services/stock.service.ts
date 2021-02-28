@@ -15,4 +15,8 @@ export class StockService {
   getAllStockes(page = 1) {
     return this.http.get<StockApiData>(`${environment.serverURL}/${page}`);
   }
+
+  addStock(data) {
+    return this.http.post<{ error: boolean, message: string }>(`${environment.serverURL}/addStock`, data);
+  }
 }
