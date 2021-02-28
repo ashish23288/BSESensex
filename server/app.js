@@ -3,20 +3,21 @@ const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
+const cors = require("cors");
+
 const connectDB = require("./config/connection");
 const indexRouter = require("./routes/routes");
-const cors = require("cors");
 
 connectDB();
 const app = express();
+const server = require("http").createServer(app);
+const io = require("socket.io")(server);
+
+io.on("connection", (socket) => {
+  console.log("a user connected");
+});
 
 app.use(cors());
-// app.use(function(req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "*");
-//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//   res.header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT");
-//   next();
-// });
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -41,7 +42,4 @@ app.use((err, req, res, next) => {
   res.send(err.message);
 });
 
-// const port = process.env.PORT || '8080';
-// app.set('port', port);
-// app.listen(port);
-module.exports = app;
+module.exports = { app: app, server: server };
