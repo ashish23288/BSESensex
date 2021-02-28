@@ -22,9 +22,9 @@
       </tr>
     </tbody>
   </table>
-  <div class="row">
+  <div class="row button-section">
     <div class="col-12">
-      <button class="btn btn-primary mb-2" (click)="open(mymodal)">Add</button>
+      <button class="btn btn-primary mb-3" (click)="open(mymodal)">Add New</button>
     </div>
   </div>
   <nav aria-label="..." *ngIf="paginationArr.length > 0">
@@ -54,7 +54,7 @@
       <div class="form-group">
         <label class="control-label col-sm-4">Open Value:</label>
         <input type="number" class="form-control" id="open" required min="0" ngModel name="open" #open="ngModel">
-        <div *ngIf="open.invalid && (open.dirty || open.touched || stockForm.submitted)" class="alert alert-danger">
+        <div *ngIf="open.invalid && (open.dirty || open.touched || stockForm.submitted)" class="invalid-alert-danger">
           <div *ngIf="open.errors.required">
             Open Value is required.
           </div>
@@ -66,7 +66,7 @@
       <div class="form-group">
         <label class="control-label col-sm-4">Close Value:</label>
         <input type="number" class="form-control" id="close" required min="0" ngModel name="close" #close="ngModel">
-        <div *ngIf="close.invalid && (close.dirty || close.touched || stockForm.submitted)" class="alert alert-danger">
+        <div *ngIf="close.invalid && (close.dirty || close.touched || stockForm.submitted)" class="invalid-alert-danger">
           <div *ngIf="close.errors.required">
             Close Value is required.
           </div>
