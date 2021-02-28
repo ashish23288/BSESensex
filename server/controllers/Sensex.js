@@ -5,7 +5,7 @@ exports.getAllStockes = async (req, res) => {
   if (pageNo < 0 || pageNo === 0 || isNaN(pageNo)) {
     return res.json({ "error": true, "message": "invalid page number, should start with 1" });
   }
-  const size = 3;
+  const size = 30;
   let totalCount = 0;
   await Sensex.count().then((count) => {
     totalCount = count;

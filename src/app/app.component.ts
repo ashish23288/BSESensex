@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import io from 'socket.io-client';
 import { Stock } from './modals/stock';
 import { StockService } from './services/stock.service';
@@ -18,7 +19,7 @@ export class AppComponent implements OnInit {
   currentPage: number;
   paginationArr: number[] = [];
 
-  constructor(private readonly stockService: StockService) { }
+  constructor(private readonly stockService: StockService, private modalService: NgbModal) { }
 
   ngOnInit() {
     this.socket = io(environment.serverURL, { transports: ['websocket'] });
@@ -26,6 +27,15 @@ export class AppComponent implements OnInit {
       this.getAllStockes(1);
     });
     this.getAllStockes(1);
+  }
+
+  open(content) {
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' })
+    // .result.then((result) => {
+    //   this.closeResult = `Closed with: ${result}`;
+    // }, (reason) => {
+    //   this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    // });
   }
 
   getAllStockes(page: number) {
