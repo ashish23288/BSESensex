@@ -9,7 +9,7 @@ exports.getAllStockes = async (req, res) => {
   }
   const size = 30;
   let totalCount = 0;
-  await Sensex.count().then((count) => {
+  await Sensex.countDocuments().then((count) => {
     totalCount = count;
   });
   await Sensex.find()
@@ -50,6 +50,7 @@ exports.addStock = (req, res) => {
         res.json({ "error": true, "message": "Error Saving data" });
       });
   } else {
+    res.status(400);
     res.json({ "warning": true, "message": "Invalid Values" });
   }
 };
