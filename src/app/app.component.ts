@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
 import io from 'socket.io-client';
 import { Stock } from './modals/stock';
 import { StockService } from './services/stock.service';
@@ -19,7 +20,7 @@ export class AppComponent implements OnInit {
   currentPage: number;
   paginationArr: number[] = [];
 
-  constructor(private readonly stockService: StockService, private modalService: NgbModal) { }
+  constructor(private readonly stockService: StockService, private modalService: NgbModal, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.socket = io(environment.serverURL, { transports: ['websocket'] });
@@ -38,9 +39,9 @@ export class AppComponent implements OnInit {
     this.stockService.addStock(stockForm).subscribe((res) => {
       if (!res.error) {
         this.modalService.dismissAll();
-        alert('Added');
+        this.toastr.success('Added Successfully');
       } else {
-        alert('Failed');
+        this.toastr.error('Failed');
       }
     });
   }
@@ -53,8 +54,7 @@ export class AppComponent implements OnInit {
       this.totalPages = data.totalPages;
       this.currentPage = data.currentPage;
       this.paginationArr = Array.from(Array(this.totalPages).keys()).map((val) => val + 1);
-      console.log('this.paginationArr', this.paginationArr);
-
+      window.scroll(0, 0);
     });
   }
 }
