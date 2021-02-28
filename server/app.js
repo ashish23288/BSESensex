@@ -26,11 +26,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 const rootFolder = "/bse-sensex";
 const fullPath = __dirname.substring(0, __dirname.indexOf(rootFolder) + rootFolder.length);
-const distPath = path.join(fullPath + "/dist/bse-sensex/");
+const distPath = path.join(fullPath + "/dist/bse-sensex");
 app.use(express.static(distPath));
 
 app.use("/api", stockRouter);
-app.use(indexRouter);
+// app.use(indexRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
