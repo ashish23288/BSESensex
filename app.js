@@ -6,7 +6,7 @@ const logger = require("morgan");
 const cors = require("cors");
 
 const connectDB = require("./config/connection");
-const indexRouter = require("./routes/indexRoutes");
+// const indexRouter = require("./routes/indexRoutes");
 const stockRouter = require("./routes/stockRoutes");
 
 connectDB();
@@ -26,7 +26,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 const rootFolder = "/bse-sensex";
 const fullPath = __dirname.substring(0, __dirname.indexOf(rootFolder) + rootFolder.length);
-const distPath = path.join(fullPath + "/dist/bse-sensex");
+const distPath = path.join(fullPath + "/public/bse-sensex");
 app.use(express.static(distPath));
 
 app.use("/api", stockRouter);
