@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import io from 'socket.io-client';
 import { Stock } from './modals/stock';
 import { StockService } from './services/stock.service';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -8,6 +10,7 @@ import { StockService } from './services/stock.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+  socket;
   title = 'BseSensex';
   stockData: Stock[];
   totalItems: number;
@@ -18,10 +21,15 @@ export class AppComponent implements OnInit {
   constructor(private readonly stockService: StockService) { }
 
   ngOnInit() {
+    this.socket = io(environment.serverURL, { transports: ['websocket'] });
+    this.socket.on('receive_message', (data) => {
+      this.getAllStockes(1);
+    });
     this.getAllStockes(1);
   }
 
   getAllStockes(page: number) {
+    this.socket.emit('paginate');
     this.stockService.getAllStockes(page).subscribe((data) => {
       this.stockData = data.records;
       this.totalItems = data.totalItems;

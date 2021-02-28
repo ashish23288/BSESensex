@@ -36,7 +36,9 @@ exports.addStock = (req, res) => {
   });
   data.save()
     .then((result) => {
-      res.send({ "error": false, "message": "Data Added Successfully" });
+      const io = req.app.get("socketio");
+      io.sockets.emit("receive_message");
+      res.json({ "error": false, "message": "Data Added Successfully" });
     })
     .catch((err) => {
       console.error(err);
