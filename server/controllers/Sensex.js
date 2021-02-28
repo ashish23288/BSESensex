@@ -1,4 +1,6 @@
+const Joi = require("joi");
 const Sensex = require("../models/sensex");
+const addStockSchema = require("../validations/addStockSchema");
 
 exports.getAllStockes = async (req, res) => {
   const pageNo = +req.params.pageNo;
@@ -30,18 +32,24 @@ exports.getAllStockes = async (req, res) => {
 };
 
 exports.addStock = (req, res) => {
-  const data = new Sensex({
+  const addNew = {
     open: req.body.open,
     close: req.body.close
-  });
-  data.save()
-    .then((result) => {
-      const io = req.app.get("socketio");
-      io.sockets.emit("receive_message");
-      res.json({ "error": false, "message": "Data Added Successfully" });
-    })
-    .catch((err) => {
-      console.error(err);
-      res.json({ "error": true, "message": "Error Saving data" });
-    });
+  };
+  const validateResult = Joi.validate(addNew, addStockSchema, { abortEarly: false });
+  if (validateResult.error === null) {
+    const data = new Sensex(addNew);
+    data.save()
+      .then(() => {
+        const io = req.app.get("socketio");
+        io.sockets.emit("receive_message");
+        res.json({ "success": true, "message": "Data Added Successfully" });
+      })
+      .catch((err) => {
+        console.error(err);
+        res.json({ "error": true, "message": "Error Saving data" });
+      });
+  } else {
+    res.json({ "warning": true, "message": "Invalid Values" });
+  }
 };

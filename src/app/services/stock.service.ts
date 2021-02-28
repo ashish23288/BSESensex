@@ -17,6 +17,7 @@ export class StockService {
   }
 
   addStock(data) {
-    return this.http.post<{ error: boolean, message: string }>(`${environment.serverURL}/addStock`, data);
+    return this.http.post<{ success?: boolean, warning?: boolean, error?: boolean, message: string }>
+      (`${environment.serverURL}/addStock`, data);
   }
 }

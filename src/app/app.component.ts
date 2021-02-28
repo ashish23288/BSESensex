@@ -37,9 +37,11 @@ export class AppComponent implements OnInit {
   submit(stockForm) {
     console.log(stockForm);
     this.stockService.addStock(stockForm).subscribe((res) => {
-      if (!res.error) {
+      if (res.success) {
         this.modalService.dismissAll();
         this.toastr.success('Added Successfully');
+      } else if (res.warning) {
+        this.toastr.warning('Invalid Values');
       } else {
         this.toastr.error('Failed');
       }
