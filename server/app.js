@@ -6,7 +6,8 @@ const logger = require("morgan");
 const cors = require("cors");
 
 const connectDB = require("./config/connection");
-const indexRouter = require("./routes/routes");
+const indexRouter = require("./routes/indexRoutes");
+const stockRouter = require("./routes/stockRoutes");
 
 connectDB();
 const app = express();
@@ -23,9 +24,13 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
+const rootFolder = "/bse-sensex";
+const fullPath = __dirname.substring(0, __dirname.indexOf(rootFolder) + rootFolder.length);
+const distPath = path.join(fullPath + "/dist/bse-sensex/");
+app.use(express.static(distPath));
 
-app.use("/api", indexRouter);
+app.use("/api", stockRouter);
+app.use(indexRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
