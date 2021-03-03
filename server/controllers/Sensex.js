@@ -1,6 +1,6 @@
 const Joi = require("joi");
 const Sensex = require("../models/sensex");
-const addStockSchema = require("../validations/addStockSchema");
+const { addStockSchema, updateStockSchema } = require("../validations/addStockSchema");
 
 exports.getAllStockes = async (req, res) => {
   const pageNo = +req.params.pageNo;
@@ -14,7 +14,7 @@ exports.getAllStockes = async (req, res) => {
   });
   await Sensex.find()
     .sort({ date: -1 })
-    .select("open close date -_id")
+    .select("open close date")
     .skip(size * (pageNo - 1))
     .limit(size)
     .then((data) => {
@@ -44,6 +44,31 @@ exports.addStock = (req, res) => {
         const io = req.app.get("socketio");
         io.sockets.emit("receive_message");
         res.json({ "success": true, "message": "Data Added Successfully" });
+      })
+      .catch((err) => {
+        console.error(err);
+        res.json({ "error": true, "message": "Error Saving data" });
+      });
+  } else {
+    res.status(400);
+    res.json({ "warning": true, "message": "Invalid Values" });
+  }
+};
+
+exports.updateStock = (req, res) => {
+  const updateObj = {
+    _id: req.body._id,
+    open: req.body.open,
+    close: req.body.close
+  };
+  const validateResult = Joi.validate(updateObj, updateStockSchema, { abortEarly: false });
+  if (validateResult.error === null) {
+    updateObj.date = new Date();
+    Sensex.updateOne({ _id: req.body._id }, updateObj)
+      .then(() => {
+        const io = req.app.get("socketio");
+        io.sockets.emit("receive_message");
+        res.json({ "success": true, "message": "Data Updated Successfully" });
       })
       .catch((err) => {
         console.error(err);

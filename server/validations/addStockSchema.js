@@ -5,4 +5,11 @@ const addStockSchema = {
   close: Joi.number().min(0).required()
 };
 
-module.exports = addStockSchema;
+const updateStockSchema = {
+  _id: Joi.string().required(),
+  open: Joi.number().min(0).required(),
+  close: Joi.number().min(0).required()
+};
+
+module.exports.addStockSchema = addStockSchema;
+module.exports.updateStockSchema = updateStockSchema;

@@ -19,6 +19,9 @@ export class AppComponent implements OnInit {
   totalPages: number;
   currentPage: number;
   paginationArr: number[] = [];
+  openValue: number = null;
+  closeValue: number = null;
+  editId: string;
 
   constructor(private readonly stockService: StockService, private modalService: NgbModal, private toastr: ToastrService) { }
 
@@ -31,21 +34,45 @@ export class AppComponent implements OnInit {
   }
 
   open(content) {
+    this.editId = null;
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
+  }
+
+  openEdit(stock: Stock, content) {
+    this.openValue = stock.open;
+    this.closeValue = stock.close;
+    this.editId = stock._id;
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
   }
 
   submit(stockForm) {
-    console.log(stockForm);
-    this.stockService.addStock(stockForm).subscribe((res) => {
-      if (res.success) {
-        this.modalService.dismissAll();
-        this.toastr.success('Added Successfully');
-      } else if (res.warning) {
-        this.toastr.warning('Invalid Values');
-      } else {
-        this.toastr.error('Failed');
-      }
-    });
+
+    if (this.editId) {
+      stockForm._id = this.editId;
+      console.log('update', stockForm);
+      this.stockService.updateStock(stockForm).subscribe((res) => {
+        if (res.success) {
+          this.modalService.dismissAll();
+          this.toastr.success('Updated Successfully');
+        } else if (res.warning) {
+          this.toastr.warning('Invalid Values');
+        } else {
+          this.toastr.error('Failed');
+        }
+      });
+    } else {
+      console.log('add', stockForm);
+      this.stockService.addStock(stockForm).subscribe((res) => {
+        if (res.success) {
+          this.modalService.dismissAll();
+          this.toastr.success('Added Successfully');
+        } else if (res.warning) {
+          this.toastr.warning('Invalid Values');
+        } else {
+          this.toastr.error('Failed');
+        }
+      });
+    }
   }
 
   getAllStockes(page: number) {
